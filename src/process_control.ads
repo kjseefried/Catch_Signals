@@ -60,7 +60,7 @@ private
       pragma Attach_Handler (Handle_SIGPWR, Ada.Interrupts.Names.SIGPWR);
       pragma Attach_Handler (Handle_SIGTERM, Ada.Interrupts.Names.SIGTERM);
       --  Statically attach handlers to the SIGINT, SIGPWR, SIGHUP and SIGTERM
-      --  signals.
+      --  interrupts.
 
       procedure Handle_SIGHUP_Change_Handler;
       procedure Handle_SIGHUP_Shutdown;

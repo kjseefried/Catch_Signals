@@ -39,13 +39,12 @@ package body Process_Control is
    begin
 
       if not Wait_Called then
-
          Wait_Called := True;
 
          Attach_Handler
            (New_Handler => Controller.Handle_SIGHUP_Change_Handler'Access,
             Interrupt   => Ada.Interrupts.Names.SIGHUP);
-         --  Dynamically attach a handler to the SIGHUP signal.
+         --  Dynamically attach a handler to the SIGHUP interrupt.
 
          Put ("Wait called. Process_State is ");
          Put (Controller.Get_State);
@@ -112,7 +111,7 @@ package body Process_Control is
 
          Attach_Handler (New_Handler => Handle_SIGHUP_Shutdown'Access,
                          Interrupt   => Ada.Interrupts.Names.SIGHUP);
-         --  Dynamically assign a new handler to the SIGHUP signal.
+         --  Dynamically assign a new handler to the SIGHUP interrupt.
 
       end Handle_SIGHUP_Change_Handler;
 

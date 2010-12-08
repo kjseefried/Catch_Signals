@@ -27,13 +27,13 @@ is
 
 begin
 
-   Put_Line ("Lets catch some signals!");
+   Put_Line ("Lets catch some interrupts!");
 
    Process_Control.Wait;
-   --  Wait for a signal here. The program is "stuck" here until the
+   --  Wait for an interrupt here. The program is "stuck" here until the
    --  Process_State variable is set to Shutdown by one of the registered
-   --  signal handlers.
+   --  interrupt handlers.
 
-   Put_Line ("Signal caught - shutting down.");
+   Put_Line ("Interrupt caught - shutting down.");
 
 end Catch_Signals;
