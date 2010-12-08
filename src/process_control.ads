@@ -28,6 +28,7 @@ package Process_Control is
 
    pragma Unreserve_All_Interrupts;
    --  Make sure that GNAT does not handle any interrupts automatically.
+   --  As per GNAT 2010, this pragma only affects SIGINT.
 
    procedure Wait;
    --  Wait until Process_State is Shutdown.
@@ -35,8 +36,11 @@ package Process_Control is
 private
 
    type State is (Running, Shutdown, Stopped);
+   --  Define three different states of the running process.
 
    package State_IO is new Ada.Text_IO.Enumeration_IO (State);
+   --  Instantiate a package so we can output the value of Process_State using
+   --  the familiar Put procedure.
 
    Wait_Called : Boolean := False;
    --  Set to True when Wait is called the first time.
@@ -44,8 +48,7 @@ private
    protected Controller is
 
       entry Check;
-      --  Check if the Process_State is Shutdown, and if so, shut down the
-      --  process.
+      --  Check the Process_State is Shutdown, and if so, shut down the process
 
       function Get_State return State;
       --  Return the current Process_State.
@@ -58,7 +61,7 @@ private
       pragma Attach_Handler (Handle_SIGPWR, Ada.Interrupts.Names.SIGPWR);
       pragma Attach_Handler (Handle_SIGHUP, Ada.Interrupts.Names.SIGHUP);
       pragma Attach_Handler (Handle_SIGTERM, Ada.Interrupts.Names.SIGTERM);
-      --  Handles the SIGINT, SIGPWR, SIGHUP and SIGTERM signals.
+      --  Attach handlers to the SIGINT, SIGPWR, SIGHUP and SIGTERM signals.
 
       entry Start;
       --  Set Process_State to Running.

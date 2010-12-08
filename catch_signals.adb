@@ -30,6 +30,9 @@ begin
    Put_Line ("Lets catch some signals!");
 
    Process_Control.Wait;
+   --  Wait for a signal here. The program is "stuck" here until the
+   --  Process_State variable is set to Shutdown by one of the registered
+   --  signal handlers.
 
    Put_Line ("Signal caught - shutting down.");
 
