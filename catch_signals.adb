@@ -17,10 +17,14 @@
 --                                                                           --
 -------------------------------------------------------------------------------
 
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;
 with Process_Control;
 
-procedure Catch_Signals is
+procedure Catch_Signals
+is
+
+   use Ada.Text_IO;
+
 begin
 
    Put_Line ("Lets catch some signals!");

@@ -21,7 +21,7 @@
 --                                                                           --
 -------------------------------------------------------------------------------
 
-with Ada.Interrupts.Names; use Ada.Interrupts.Names;
+with Ada.Interrupts.Names;
 with Ada.Text_IO;
 
 package Process_Control is
@@ -54,10 +54,10 @@ private
       procedure Handle_SIGINT;
       procedure Handle_SIGPWR;
       procedure Handle_SIGTERM;
-      pragma Attach_Handler (Handle_SIGINT, SIGINT);
-      pragma Attach_Handler (Handle_SIGPWR, SIGPWR);
-      pragma Attach_Handler (Handle_SIGHUP, SIGHUP);
-      pragma Attach_Handler (Handle_SIGTERM, SIGTERM);
+      pragma Attach_Handler (Handle_SIGINT, Ada.Interrupts.Names.SIGINT);
+      pragma Attach_Handler (Handle_SIGPWR, Ada.Interrupts.Names.SIGPWR);
+      pragma Attach_Handler (Handle_SIGHUP, Ada.Interrupts.Names.SIGHUP);
+      pragma Attach_Handler (Handle_SIGTERM, Ada.Interrupts.Names.SIGTERM);
       --  Handles the SIGINT, SIGPWR, SIGHUP and SIGTERM signals.
 
       entry Start;
