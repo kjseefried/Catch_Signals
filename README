@@ -1,4 +1,4 @@
-This program demonstrates how signals can be caught and handled in an Ada
+This program demonstrates how interrupts can be caught and handled in an Ada
 program.
 
 This program is distributed in the hope that it will be useful, but WITHOUT 
