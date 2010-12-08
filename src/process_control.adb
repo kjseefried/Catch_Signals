@@ -21,6 +21,8 @@
 --                                                                           --
 -------------------------------------------------------------------------------
 
+with Ada.Interrupts;
+
 package body Process_Control is
 
    ------------
@@ -30,6 +32,7 @@ package body Process_Control is
    procedure Wait
    is
 
+      use Ada.Interrupts;
       use Ada.Text_IO;
       use State_IO;
 
@@ -38,6 +41,11 @@ package body Process_Control is
       if not Wait_Called then
 
          Wait_Called := True;
+
+         Attach_Handler
+           (New_Handler => Controller.Handle_SIGHUP_Change_Handler'Access,
+            Interrupt   => Ada.Interrupts.Names.SIGHUP);
+         --  Dynamically attach a handler to the SIGHUP signal.
 
          Put ("Wait called. Process_State is ");
          Put (Controller.Get_State);
@@ -85,26 +93,51 @@ package body Process_Control is
 
       end Get_State;
 
-      ---------------------
-      --  Handle_SIGHUP  --
-      ---------------------
+      ------------------------------------
+      --  Handle_SIGHUP_Change_Handler  --
+      ------------------------------------
 
-      procedure Handle_SIGHUP is
+      procedure Handle_SIGHUP_Change_Handler
+      is
+
+         use Ada.Interrupts;
+         use Ada.Text_IO;
+
+      begin
+
+         Put_Line ("Handle_SIGHUP_Change_Handler called.");
+         Put_Line
+           ("Dynamically changing handler to Handle_SIGHUP_Shutdown.");
+         Put_Line ("Next SIGHUP will stop the program.");
+
+         Attach_Handler (New_Handler => Handle_SIGHUP_Shutdown'Access,
+                         Interrupt   => Ada.Interrupts.Names.SIGHUP);
+         --  Dynamically assign a new handler to the SIGHUP signal.
+
+      end Handle_SIGHUP_Change_Handler;
+
+      ------------------------------
+      --  Handle_SIGHUP_Shutdown  --
+      ------------------------------
+
+      procedure Handle_SIGHUP_Shutdown
+      is
 
          use Ada.Text_IO;
 
       begin
 
-         Put_Line ("Handle_SIGHUP called.");
+         Put_Line ("Handle_SIGHUP_Shutdown called.");
          Process_State := Shutdown;
 
-      end Handle_SIGHUP;
+      end Handle_SIGHUP_Shutdown;
 
       ---------------------
       --  Handle_SIGINT  --
       ---------------------
 
-      procedure Handle_SIGINT is
+      procedure Handle_SIGINT
+      is
 
          use Ada.Text_IO;
 
@@ -119,7 +152,8 @@ package body Process_Control is
       --  Handle_SIGPWR  --
       ---------------------
 
-      procedure Handle_SIGPWR is
+      procedure Handle_SIGPWR
+      is
 
          use Ada.Text_IO;
 
@@ -134,7 +168,8 @@ package body Process_Control is
       --  Handle_SIGTERM  --
       ----------------------
 
-      procedure Handle_SIGTERM is
+      procedure Handle_SIGTERM
+      is
 
          use Ada.Text_IO;
 
@@ -162,7 +197,7 @@ package body Process_Control is
          Put (Controller.Get_State);
          New_Line;
 
-         Put_Line ("I will shut down on SIGHUP, SIGINT, SIGPWR and SIGTERM.");
+         Put_Line ("I will react on SIGHUP, SIGINT, SIGPWR and SIGTERM.");
 
       end Start;
 

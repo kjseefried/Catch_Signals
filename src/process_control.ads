@@ -53,15 +53,21 @@ private
       function Get_State return State;
       --  Return the current Process_State.
 
-      procedure Handle_SIGHUP;
       procedure Handle_SIGINT;
       procedure Handle_SIGPWR;
       procedure Handle_SIGTERM;
       pragma Attach_Handler (Handle_SIGINT, Ada.Interrupts.Names.SIGINT);
       pragma Attach_Handler (Handle_SIGPWR, Ada.Interrupts.Names.SIGPWR);
-      pragma Attach_Handler (Handle_SIGHUP, Ada.Interrupts.Names.SIGHUP);
       pragma Attach_Handler (Handle_SIGTERM, Ada.Interrupts.Names.SIGTERM);
-      --  Attach handlers to the SIGINT, SIGPWR, SIGHUP and SIGTERM signals.
+      --  Statically attach handlers to the SIGINT, SIGPWR, SIGHUP and SIGTERM
+      --  signals.
+
+      procedure Handle_SIGHUP_Change_Handler;
+      procedure Handle_SIGHUP_Shutdown;
+      pragma Interrupt_Handler (Handle_SIGHUP_Change_Handler);
+      pragma Interrupt_Handler (Handle_SIGHUP_Shutdown);
+      --  Handle_SIGHUP_* can now be dynamically assigned using the
+      --  Ada.Interrupts.Attach_Handler procedure.
 
       entry Start;
       --  Set Process_State to Running.
