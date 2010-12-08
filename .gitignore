@@ -2,5 +2,5 @@
 build/*.o
 build/*.ali
 
-# Do not track the in exe/
-exe/*
+# Do not track the executable.
+exe/catch_signals
