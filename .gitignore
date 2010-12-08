@@ -1,0 +1,6 @@
+# Do not track build objects.
+build/*.o
+build/*.ali
+
+# Do not track the in exe/
+exe/*
